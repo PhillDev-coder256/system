@@ -9,21 +9,105 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Expenditure</title>
+    <title>Paid Loan</title>
+    <style>
+    .popup{
+            animation: transitionIn-Y-bottom 0.5s;
+        }
+        .sub-table{
+            animation: transitionIn-Y-bottom 0.5s;
+        }
+    .overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.7);
+    transition: opacity 500ms;
+    opacity: 1;
+    z-index: 3;
+  }
+  .overlay:target {
+    visibility: visible;
+    opacity: 1;
+    
+  }
+  
+  .popup {
+    margin: 10px auto;
+    padding: 10px;
+    background: #fff;
+    border-radius: 5px;
+    width: 70%;
+    position: relative;
+    transition: all 5s ease-in-out;
+    z-index: 3;
+  }
+  
+  .popup h2 {
+    margin-top: 0;
+    color: #333;
+  }
+  .popup .close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    transition: all 200ms;
+    font-size: 30px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #333;
+  }
+  .popup .close:hover {
+    color: var(--primarycolorhover);
+  }
+  .popup .content {
+    /* max-height: 30%; */
+    overflow: auto;
+  }
+  
+  @media screen and (max-width: 700px){
+    .box{
+      width: 70%;
+    }
+    .popup{
+      width: 70%;
+    }
+  }
+
+
+
+
+
+    </style>
 
     <!-- Custom fonts for this template-->
-    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="../css/sb-admin-2.min.css" rel="stylesheet">
 
 </head>
 
 <body id="page-top">
+    <?php
+    
+        session_start();
+        $useremail = $_SESSION['user'];
 
+        date_default_timezone_set('Africa/Kampala');
+        $date = date('d-m-Y');
+
+        include('/opt/lampp/htdocs/system/connection.php');
+        include('check_authentication.php');
+
+        $paid_loansql= "select * from paid_loan where email = '$useremail'";
+
+    ?>
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -31,11 +115,11 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="dashboard.php">
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div>
-                <div class="sidebar-brand-text mx-3">Admin </div>
+                <div class="btn btn-warning text-lowercase sidebar-brand-text mx-3"><?php echo $_SESSION['user']?></div>
             </a>
 
             <!-- Divider -->
@@ -43,34 +127,36 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="index.html">
+                <a class="nav-link" href="dashboard.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="income.html">
+                <a class="nav-link" href="income.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Income</span></a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="expenditure.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Available Amount</span></a>
+                    <span>Expenditure</span></a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="expenditure.html">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Total Expenditure</span></a>
-            </li>
-            <li class="nav-item active">
-                <a class="nav-link" href="savings.html">
+                <a class="nav-link" href="savings.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Savings</span></a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="loans.html">
+                <a class="nav-link" href="loans.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Loans</span></a>
+                    <span>Loans</span>
+                </a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="wishlist.php">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Wishlist</span>
+                </a>
             </li>
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
@@ -99,6 +185,7 @@
 
                     <!-- Topbar Search -->
                     <form
+                    
                         class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                         <div class="input-group">
                             <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
@@ -110,6 +197,9 @@
                             </div>
                         </div>
                     </form>
+                    <div>
+                        <button class="btn btn-warning"><?php echo $date; ?></button>
+                    </div>
 
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
@@ -249,11 +339,11 @@
 
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">PhillDev-Coder</span>
+                                <span style="fontweight:bold" class=" btn btn-sm btn-danger text-uppercase mr-2 d-none d-lg-inline text-gray-900 large"><?php echo $_SESSION['username'] ?></span>
                                 <img class="img-profile rounded-circle"
-                                    src="img/undraw_profile.svg">
+                                    src="../img/undraw_profile_2.svg">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -288,85 +378,63 @@
 
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Expenditure</h1>
-                        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                class="fas fa-download fa-sm text-white-50"></i> Print PDF</a>
+
+                        <h1 class="h3 mb-0 text-gray-800">Paid Loan &nbsp &nbsp</h1>
+                        <a href="dashboard.php" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                                class="fas fa-download fa-sm text-white-50"></i> Return to home</a>
                     </div>
 
                     <div class="income">
-                        <form class="user">
-                            <div class="form-group">
-                                <input type="date" class="form-control" placeholder="Enter date....">
-                            </div>
-                            <div class="form-group">
-                                <input type="number" class="form-control" placeholder="Enter Amount....">
-                            </div>
-                            <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Enter Comment....">
-                            </div>
-                            <div>
-                                <button class="btn btn-primary btn-user btn-block">
-                                    Save
-                                </button>
-                                <button type="clear" class="btn btn-primary btn-user btn-block">
-                                    Clear
-                                </button>
-                            </div>
-                            <hr>
-                            
-                        </form>
                         <table class="table table-bordered">
                             <thead class="thead-dark">
                                 <tr>
-                                    <th>DATE</th>
-                                    <th>AMOUNT</th>
-                                    <th>COMMMENT</th>
+                                    <th>ID</th>
+                                    <th>Old ID</th>
+                                    <th>DATE INSERTED</th>
+                                    <th>DATE PAID</th>
+                                    <th>LOAN BALANCE</th>
+                                    <th>AMOUNT PAID</th>
+                                    <th>COMMENT</th>
+                                    <th>USER EMAIL</th>
+                                    <th>ACTION</th>
                                 </tr>
                             </thead>
+                            
                             <tbody>
+                                <?php
+                                    $result = mysqli_query($database, $paid_loansql);
+                                    while($row = mysqli_fetch_array($result)){
+                                        $id = $row['id'];
+                                        $email = $row['useremail'];
+                                ?>
                                 <tr>
-                                    <td>09th Jan 2023</td>
-                                    <td>40,000,000</td>
-                                    <td>From New Company</td>
+                                    
+                                    <td><?php echo $row['ID'] ?></td>
+                                    <td><?php echo $row['old_id'] ?></td>
+                                    <td><?php echo $row['date_inserted'] ?></td>
+                                    <td><?php echo $row['date_paid'] ?></td>
+                                    <td><?php echo number_format(($row['amount'] - $row['$amount_paid']), 1) ?></td>
+                                    <td><?php echo number_format($row['amount_paid'], 1) ?></td>
+                                    <td><?php echo $row['comment'] ?></td>
+                                    <td><?php echo $row['email'] ?></td>
+                                    <td>
+                                        <?php
+                                            echo '
+                                            <div style="display:flex;justify-content: space-around;">
+                                            <a href="?action=view&id='.$id.'&error=0" class="non-style-link"><button  class="btn-primary-soft btn btn-info button-icon btn-edit"  ><i class="fa fa-info"></i>&nbsp &nbsp<font  class="tn-in-text">View</font></button></a>
+                                            &nbsp;&nbsp;&nbsp;
+                                            ';
+                                        ?>
+                                    </td>
                                 </tr>
-                                <tr>
-                                    <td>09th Jan 2023</td>
-                                    <td>40,000,000</td>
-                                    <td>From New Company</td>
-                                </tr>
-                                <tr>
-                                    <td>09th Jan 2023</td>
-                                    <td>40,000,000</td>
-                                    <td>From New Company</td>
-                                </tr>
-                                <tr>
-                                    <td>09th Jan 2023</td>
-                                    <td>40,000,000</td>
-                                    <td>From New Company</td>
-                                </tr>
-                                <tr>
-                                    <td>09th Jan 2023</td>
-                                    <td>40,000,000</td>
-                                    <td>From New Company</td>
-                                </tr>
-                                <tr>
-                                    <td>09th Jan 2023</td>
-                                    <td>40,000,000</td>
-                                    <td>From New Company</td>
-                                </tr>
-                                <tr>
-                                    <td>09th Jan 2023</td>
-                                    <td>40,000,000</td>
-                                    <td>From New Company</td>
-                                </tr>
-                                <tr>
-                                    <th>TOTAL</th>
-                                    <th colspan="2">UGX.50,0000</th>
-                                </tr>
+                                    <?php } ?>
                             </tbody>
+                            
                         </table>
                     </div>
                 </div>
+                
+                
 
             </div>
             <!-- Footer -->
@@ -403,29 +471,172 @@
                 </div>
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
+                    <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" href="../../logout.php">Logout</a>
                 </div>
             </div>
         </div>
     </div>
 
+    <?php
+
+if($_GET){
+            
+    $id=$_GET["id"];
+    $action=$_GET["action"];
+    if($action=='drop'){
+        $emailget=$_GET["useremail"];
+        
+    }elseif($action=='view'){
+        $sqlmain= "select * from paid_loan where id='$id'";
+        $result= $database->query($sqlmain);
+        $row=$result->fetch_assoc();
+        $email=$row["useremail"];
+        $amount=$row["amount"];
+        $date=$row["date"];
+        $comment = $row['comment'];
+
+        $_SESSION['amount'] = $amount;
+        $_SESSION['date'] = $date;
+        $_SESSION['comment'] = $comment;
+        
+        echo '
+        <div id="popup1" class="overlay">
+                <div class="popup">
+                <center>
+                    <h2></h2>
+                    <a class="close" href="paid_loan.php">&times;</a>
+                    <div class="content">
+                        <b>----------paid_loan Details----------</b><br>
+                        
+                    </div>
+                    <div style="display: flex;justify-content: center;">
+                    <table width="80%" class="sub-table scrolldown add-doc-form-container" border="0">
+                    
+                       
+                        <tr>
+                            <td class="label-td" colspan="2">
+                                <label for="id" style="font-weight:bold ;font-size:20px" class="form-label">ID: </label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-primary label-td" colspan="2">
+                            '.$id.'<br><br>
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td class=" label-td" colspan="2">
+                                <label for="Email" style="font-weight:bold; font-size:20px" class="form-label">Email: </label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-primary label-td" colspan="2">
+                            '.$email.'<br><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="label-td" colspan="2">
+                                <label for="nic" style="font-weight:bold ;font-size:20px" class="form-label">Amount: </label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-primary label-td" colspan="2">
+                            '.$amount.'<br><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="label-td" colspan="2">
+                                <label for="Tele" style="font-weight:bold ;font-size:20px" class="form-label">Date: </label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-primary label-td" colspan="2">
+                            '.$date.'<br><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="label-td" colspan="2">
+                                <label for="spec" style="font-weight:bold ;font-size:20px" class="form-label">Comment: </label>
+                                
+                            </td>
+                        </tr>
+                        <tr>
+                        <td class="text-primary label-td" style="font-weight:bold ;font-size:20px" colspan="2">
+                        '.$comment.'<br><br>
+                        </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <a href="paid_loan.php"><input type="button" value="Close" class="btn-warning login-btn btn-primary-soft btn" ></a>
+                            
+                                
+                            </td>
+            
+                        </tr>
+                    
+
+                    </table>
+                    </div>
+                </center>
+                <br><br>
+        </div>
+        </div>
+        ';
+        
+    }else{
+        echo "No action performeed";
+    }
+}else{
+    // echo "Not get method";
+};
+
+    ?>
+
     <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../vendor/jquery/jquery.min.js"></script>
+    <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
+    <script src="../js/sb-admin-2.min.js"></script>
 
     <!-- Page level plugins -->
-    <script src="vendor/chart.js/Chart.min.js"></script>
+    <script src="../vendor/chart.js/Chart.min.js"></script>
+    <!-- Page level plugins -->
+    <script src="vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
     <!-- Page level custom scripts -->
-    <script src="js/demo/chart-area-demo.js"></script>
-    <script src="js/demo/chart-pie-demo.js"></script>
+    <script src="../js/demo/chart-area-demo.js"></script>
+    <script src="../js/demo/chart-pie-demo.js"></script>
+    <script src="js/demo/datatables-demo.js"></script>
+
+    <!-- <script> -->
+    <script>
+    function updateTotalPaidLoan() {
+        // Make an AJAX request to fetch the updated total amount
+        fetch('update_total_paid_loan.php')
+            .then(response => response.json())
+            .then(data => {
+                if (data.total_paid_loan !== undefined) {
+                    // Update the displayed total amount
+                    document.getElementById('totalPaidLoanAmount').textContent = 677676;
+                    // $_SESSION['total_paid_loan'] = data.total_paid_loan;
+                } else {
+                    console.error('Error updating total paid_loan amount:', data.error);
+                }
+            })
+            .catch(error => {
+                console.error('An error occurred:', error);
+            });
+    }
+
+    // Call the function to update the total on page load
+    updateTotalPaidLoan();
+    </script>
 
 </body>
 

@@ -9,20 +9,43 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Savings</title>
+    <title>User | Dashboard</title>
 
     <!-- Custom fonts for this template-->
-    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="../css/sb-admin-2.min.css" rel="stylesheet">
 
 </head>
 
 <body id="page-top">
+    <?php
+        session_start();
+
+        date_default_timezone_set('Africa/ Kampala');
+        include('/opt/lampp/htdocs/system/connection.php');
+        include('check_authentication.php');
+        // include('income.php');
+        include('update_total_income.php');
+        include('update_total_loan.php');
+        include('update_total_saving.php');
+        include('update_total_wishlist.php');
+        include('update_total_expenditure.php');
+        include('update_total_paid_loan.php');
+        include('update_total_deleted_loan.php');
+
+        // Check if the session variable exists and display the total income if it does
+        
+
+        // $total_income = $_SESSION['total_income'];
+        
+
+    ?>
 
     <!-- Page Wrapper -->
     <div id="wrapper">
@@ -31,11 +54,11 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="dashboard.php">
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div>
-                <div class="sidebar-brand-text mx-3">Admin </div>
+                <div style="text-transform: lowercase" class="btn btn-warning sidebar-brand-text mx-3"><?php echo $_SESSION['user'] ?> </div>
             </a>
 
             <!-- Divider -->
@@ -43,34 +66,72 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="index.html">
+                <a class="nav-link" href="dashboard.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="income.html">
+                <a class="nav-link" href="income.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Income</span></a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="expenditure.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Available Amount</span></a>
+                    <span>Expenditure</span></a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="expenditure.html">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Total Expenditure</span></a>
-            </li>
-            <li class="nav-item active">
-                <a class="nav-link" href="savings.html">
+                <a class="nav-link" href="savings.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Savings</span></a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="loans.html">
+                <a class="nav-link" href="loans.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Loans</span></a>
+                    <span>Loans</span>
+                </a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="wishlist.php">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Wishlist</span>
+                </a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="paid_loan.php">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Paid Loans</span>
+                </a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="deleted_income.php">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Deleted Income</span>
+                </a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="deleted_expenditure.php">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Deleted Expenditure</span>
+                </a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="deleted_saving.php">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Deleted Savings</span>
+                </a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="deleted_loan.php">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Deleted Loans</span>
+                </a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="deleted_wishlist.php">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Deleted Wishlist</span>
+                </a>
             </li>
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
@@ -110,6 +171,7 @@
                             </div>
                         </div>
                     </form>
+                    
 
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
@@ -140,7 +202,6 @@
 
                         <!-- Nav Item - Alerts -->
                         <li class="nav-item dropdown no-arrow mx-1">
-                            
                             <!-- Dropdown - Alerts -->
                             <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="alertsDropdown">
@@ -186,7 +247,6 @@
 
                         <!-- Nav Item - Messages -->
                         <li class="nav-item dropdown no-arrow mx-1">
-                            
                             <!-- Dropdown - Messages -->
                             <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="messagesDropdown">
@@ -248,12 +308,12 @@
                         <div class="topbar-divider d-none d-sm-block"></div>
 
                         <!-- Nav Item - User Information -->
-                        <li class="nav-item dropdown no-arrow">
+                        <li class="nav-item dropdown no-arrow ">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">PhillDev-Coder</span>
+                                <span style="fontweight:bold" class=" btn btn-sm btn-danger text-uppercase mr-2 d-none d-lg-inline text-gray-900 large"><?php echo $_SESSION['username'] ?></span>
                                 <img class="img-profile rounded-circle"
-                                    src="img/undraw_profile.svg">
+                                    src="../img/undraw_profile_2.svg">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -288,84 +348,138 @@
 
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Savings</h1>
+                        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+                        <div>
+                        <a href="view_user.php" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm"><i
+                                class="fas fa-user fa-sm text-white-50"></i> VIEW USERS</a>
+                        <a href="register.php" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm"><i
+                                class="fas fa-user fa-sm text-white-50"></i> ADD USER</a>
+                                <a href="message.php" class="d-none d-sm-inline-block btn btn-sm btn-warning shadow-sm"><i
+                                class="fas fa-download fa-sm text-white-50"></i> VIEW MESSAGES</a>
                         <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                class="fas fa-download fa-sm text-white-50"></i> Print PDF</a>
+                                class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+                        </div>
                     </div>
 
-                    <div class="income">
-                        <form class="user">
-                            <div class="form-group">
-                                <input type="date" class="form-control" placeholder="Enter date....">
+                    <!-- Content Row -->
+                    <div class="row">
+
+                        <!-- Earnings (Monthly) Card Example -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                Income</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">UGX.<?php echo number_format($_SESSION['total_income'], 1) ?></div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <input type="number" class="form-control" placeholder="Enter Amount....">
+                        </div>
+
+                        <!-- Loans -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-warning shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                                Loans</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">UGX.<?php echo number_format($_SESSION['total_loan'], 1); ?></div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Enter Comment....">
+                        </div>
+
+                        <!-- Earnings (Monthly) Card Example -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-success shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                                Expenditure</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">UGX.<?php echo number_format($_SESSION['total_expenditure'], 1); ?></div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div>
-                                <button class="btn btn-primary btn-user btn-block">
-                                    Save
-                                </button>
-                                <button type="clear" class="btn btn-primary btn-user btn-block">
-                                    Clear
-                                </button>
+                        </div>
+
+                        <!-- Pending Requests Card Example -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-warning shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                                Cleared Loans</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">UGX.<?php echo number_format($_SESSION['total_paid_loan'], 1); ?></div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <hr>
-                            
-                        </form>
-                        <table class="table table-bordered">
-                            <thead class="thead-dark">
-                                <tr>
-                                    <th>DATE</th>
-                                    <th>AMOUNT</th>
-                                    <th>COMMMENT</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>09th Jan 2023</td>
-                                    <td>40,000,000</td>
-                                    <td>From New Company</td>
-                                </tr>
-                                <tr>
-                                    <td>09th Jan 2023</td>
-                                    <td>40,000,000</td>
-                                    <td>From New Company</td>
-                                </tr>
-                                <tr>
-                                    <td>09th Jan 2023</td>
-                                    <td>40,000,000</td>
-                                    <td>From New Company</td>
-                                </tr>
-                                <tr>
-                                    <td>09th Jan 2023</td>
-                                    <td>40,000,000</td>
-                                    <td>From New Company</td>
-                                </tr>
-                                <tr>
-                                    <td>09th Jan 2023</td>
-                                    <td>40,000,000</td>
-                                    <td>From New Company</td>
-                                </tr>
-                                <tr>
-                                    <td>09th Jan 2023</td>
-                                    <td>40,000,000</td>
-                                    <td>From New Company</td>
-                                </tr>
-                                <tr>
-                                    <td>09th Jan 2023</td>
-                                    <td>40,000,000</td>
-                                    <td>From New Company</td>
-                                </tr>
-                                <tr>
-                                    <th>TOTAL</th>
-                                    <th colspan="2">UGX.50,0000</th>
-                                </tr>
-                            </tbody>
-                        </table>
+                        </div>
+
+                        <!-- Savings-->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-info shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Savings
+                                            </div>
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col-auto">
+                                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">UGX.<?php echo number_format($_SESSION['total_saving'], 1); ?></div>
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Net Loans -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-warning shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                                Deleted Loans</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">UGX.<?php echo number_format($_SESSION['total_deleted_loan'], 1); ?></div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+
+                
+
                 </div>
 
             </div>
@@ -404,28 +518,41 @@
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
+                    <a class="btn btn-primary" href="../../logout.php">Logout</a>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../vendor/jquery/jquery.min.js"></script>
+    <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
+    <script src="../js/sb-admin-2.min.js"></script>
 
     <!-- Page level plugins -->
-    <script src="vendor/chart.js/Chart.min.js"></script>
+    <script src="../vendor/chart.js/Chart.min.js"></script>
 
     <!-- Page level custom scripts -->
-    <script src="js/demo/chart-area-demo.js"></script>
-    <script src="js/demo/chart-pie-demo.js"></script>
+    <script src="../js/demo/chart-area-demo.js"></script>
+    <script src="../js/demo/chart-pie-demo.js"></script>
+    <!-- Include jQuery library (if not already included) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // <script>
+            $(document).ready(function() {
+                // Use jQuery to send a signal to other pages to reload
+                $.get("reload_other_pages.php", function() {
+                    // Reload is complete
+                    console.log("Reloaded other pages");
+                });
+            });
+        // </script>
+    </script>
 
 </body>
 
